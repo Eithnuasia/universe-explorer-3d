@@ -25,6 +25,7 @@ import { RocketIcon } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 import { UFO } from "./ufo";
 import { Raycaster } from "three";
+import { getSoundPath } from "@/lib/utils";
 
 // Component to handle camera repositioning for tours
 function CameraPositionHelper({ position }: { position: number[] | null }) {
@@ -247,29 +248,33 @@ function useGameAudio() {
 
   useEffect(() => {
     // Inisialisasi audio
-    movementSound.current = new Audio("/sounds/ambient/movement.mp3");
+    movementSound.current = new Audio(
+      getSoundPath("/sounds/ambient/movement.mp3")
+    );
     movementSound.current.loop = true;
     movementSound.current.volume = 0.5;
 
     // Inisialisasi ambient sound
-    ambientSound.current = new Audio("/sounds/ambient/ambient.mp3");
+    ambientSound.current = new Audio(
+      getSoundPath("/sounds/ambient/ambient.mp3")
+    );
     ambientSound.current.loop = true;
     ambientSound.current.volume = 0.25;
 
     // Inisialisasi battle sound
-    battleSound.current = new Audio("/sounds/ambient/battle.mp3");
+    battleSound.current = new Audio(getSoundPath("/sounds/ambient/battle.mp3"));
     battleSound.current.loop = true;
     battleSound.current.volume = 0.35;
 
     // Inisialisasi laser sound
-    laserSound.current = new Audio("/sounds/weapons/laser.mp3");
+    laserSound.current = new Audio(getSoundPath("/sounds/weapons/laser.mp3"));
     laserSound.current.volume = 0.45;
     laserSound.current.preload = "auto";
     laserSound.current.load();
 
     // Inisialisasi click sound pool
     for (let i = 0; i < 3; i++) {
-      const clickSound = new Audio("/sounds/ui/click.mp3");
+      const clickSound = new Audio(getSoundPath("/sounds/ui/click.mp3"));
       clickSound.volume = 0.3;
       clickSound.preload = "auto";
       clickSound.load();
@@ -277,25 +282,29 @@ function useGameAudio() {
     }
 
     // Inisialisasi quest completed sound
-    questCompletedSound.current = new Audio("/sounds/ui/quest-completed.mp3");
+    questCompletedSound.current = new Audio(
+      getSoundPath("/sounds/ui/quest-completed.mp3")
+    );
     questCompletedSound.current.volume = 0.4;
     questCompletedSound.current.preload = "auto";
     questCompletedSound.current.load();
 
     // Inisialisasi victory sound
-    victorySound.current = new Audio("/sounds/ui/succes.mp3");
+    victorySound.current = new Audio(getSoundPath("/sounds/ui/succes.mp3"));
     victorySound.current.volume = 0.4;
     victorySound.current.preload = "auto";
     victorySound.current.load();
 
     // Inisialisasi warning sound - versi sederhana tanpa efek
-    warningSound.current = new Audio("/sounds/ui/warning.mp3");
+    warningSound.current = new Audio(getSoundPath("/sounds/ui/warning.mp3"));
     warningSound.current.volume = 0.6;
     warningSound.current.preload = "auto";
     warningSound.current.load();
 
     // Inisialisasi typewriter sound
-    typewriterSound.current = new Audio("/sounds/ui/typewriter.wav");
+    typewriterSound.current = new Audio(
+      getSoundPath("/sounds/ui/typewriter.wav")
+    );
     typewriterSound.current.volume = 0.2;
     typewriterSound.current.preload = "auto";
     typewriterSound.current.load();
@@ -451,7 +460,9 @@ function useGameAudio() {
         .catch((error) => {
           console.error("Error playing warning sound:", error);
           // Coba inisialisasi ulang jika gagal
-          warningSound.current = new Audio("/sounds/ui/warning.mp3");
+          warningSound.current = new Audio(
+            getSoundPath("/sounds/ui/warning.mp3")
+          );
           warningSound.current.volume = 0.6;
           warningSound.current.play().catch(console.error);
         });
@@ -542,7 +553,9 @@ function useGameAudio() {
       laserSound.current.play().catch((error) => {
         console.error("Error playing laser sound:", error);
         // Coba inisialisasi ulang jika gagal
-        laserSound.current = new Audio("/sounds/weapons/laser.mp3");
+        laserSound.current = new Audio(
+          getSoundPath("/sounds/weapons/laser.mp3")
+        );
         laserSound.current.volume = 0.6;
         laserSound.current.play().catch(console.error);
       });
