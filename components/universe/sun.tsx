@@ -1,26 +1,160 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, Suspense, Component, ReactNode, useEffect } from "react";
 import { useFrame } from "@react-three/fiber";
-import { Sphere } from "@react-three/drei";
+import { Sphere, useGLTF } from "@react-three/drei";
 import * as THREE from "three";
+import { PlanetLabel } from "./planet-label";
+import { usePlanetInteraction } from "@/lib/hooks/use-planet-interaction";
 
-export function Sun() {
-  const sunRef = useRef<THREE.Mesh>(null);
+// Error boundary for catching model loading errors
+class ModelErrorBoundary extends Component<
+  { children: ReactNode; fallback: ReactNode },
+  { hasError: boolean }
+> {
+  constructor(props: { children: ReactNode; fallback: ReactNode }) {
+    super(props);
+    this.state = { hasError: false };
+  }
 
-  useFrame((state, delta) => {
+  static getDerivedStateFromError() {
+    return { hasError: true };
+  }
+
+  componentDidCatch(error: Error) {
+    console.error("Error loading Sun 3D model:", error);
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return this.props.fallback;
+    }
+
+    return this.props.children;
+  }
+}
+
+// Sun component that uses the 3D model
+function SunGLTF({ onClick }: { onClick: () => void }) {
+  const sunRef = useRef<THREE.Object3D>(null);
+  const { scene } = useGLTF("/models/sun.glb");
+
+  // Enhance the sun's brightness
+  useEffect(() => {
+    scene.traverse((object) => {
+      if (object instanceof THREE.Mesh) {
+        if (object.material) {
+          // Make the sun brighter
+          object.material.emissive = new THREE.Color("#FDB813");
+          object.material.emissiveIntensity = 2.5;
+          // Make it interactive
+          object.userData.isInteractive = true;
+        }
+      }
+    });
+  }, [scene]);
+
+  // Animate rotation
+  useFrame((_, delta) => {
     if (sunRef.current) {
       sunRef.current.rotation.y += delta * 0.2;
     }
   });
 
   return (
-    <Sphere ref={sunRef} args={[2, 32, 32]} position={[0, 0, 0]}>
-      <meshStandardMaterial
-        color="#FDB813"
-        emissive="#FDB813"
-        emissiveIntensity={2}
-      />
-    </Sphere>
+    <group scale={[2, 2, 2]} onClick={onClick}>
+      <primitive ref={sunRef} object={scene} />
+      {/* Add a larger glow sphere around the sun */}
+      <Sphere
+        args={[6, 32, 32]}
+        position={[0, 0, 0]}
+        onClick={onClick}
+        userData={{ isInteractive: true }}
+      >
+        <meshBasicMaterial color="#FDB813" transparent opacity={0.15} />
+      </Sphere>
+    </group>
   );
+}
+
+// Fallback sphere to use if model fails to load
+function SunFallback({ onClick }: { onClick: () => void }) {
+  const sunRef = useRef<THREE.Mesh>(null);
+  const glowRef = useRef<THREE.Mesh>(null);
+
+  useFrame((_, delta) => {
+    if (sunRef.current) {
+      sunRef.current.rotation.y += delta * 0.2;
+    }
+  });
+
+  return (
+    <group>
+      <Sphere
+        ref={sunRef}
+        args={[5, 32, 32]}
+        position={[0, 0, 0]}
+        onClick={onClick}
+        userData={{ isInteractive: true }}
+      >
+        <meshStandardMaterial
+          color="#FDB813"
+          emissive="#FDB813"
+          emissiveIntensity={3}
+        />
+      </Sphere>
+      {/* Add glow effect */}
+      <Sphere
+        ref={glowRef}
+        args={[6, 32, 32]}
+        position={[0, 0, 0]}
+        onClick={onClick}
+        userData={{ isInteractive: true }}
+      >
+        <meshBasicMaterial color="#FDB813" transparent opacity={0.2} />
+      </Sphere>
+    </group>
+  );
+}
+
+export function Sun({
+  onObjectClick,
+  discoveredPlanets,
+}: {
+  onObjectClick: (name: string, description: string) => void;
+  discoveredPlanets: string[];
+}) {
+  const { discoveredPlanets: existingPlanets, handlePlanetClick } =
+    usePlanetInteraction();
+  const isDiscovered = discoveredPlanets.includes("Sun");
+  const sunDescription =
+    "Matahari adalah bintang di pusat tata surya kita. Matahari sangat besar dan sangat panas, memancarkan cahaya dan panas yang membuat kehidupan di Bumi mungkin. Matahari terdiri dari gas hidrogen dan helium, dan memiliki diameter sekitar 1,4 juta kilometer.";
+  const fallback = (
+    <SunFallback onClick={() => onObjectClick("Sun", sunDescription)} />
+  );
+
+  return (
+    <>
+      <ModelErrorBoundary fallback={fallback}>
+        <Suspense fallback={fallback}>
+          <SunGLTF onClick={() => onObjectClick("Sun", sunDescription)} />
+        </Suspense>
+      </ModelErrorBoundary>
+      <PlanetLabel
+        name="Sun"
+        discovered={isDiscovered}
+        position={[0, 0, 0]}
+        heightOffset={22} // Higher offset for the sun
+      />
+    </>
+  );
+}
+
+// Safely preload in browser environment only
+if (typeof window !== "undefined") {
+  try {
+    useGLTF.preload("/models/sun.glb");
+  } catch (error) {
+    console.error("Error preloading Sun model:", error);
+  }
 }

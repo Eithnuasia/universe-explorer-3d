@@ -1,0 +1,40 @@
+.weapon-mode .text-cyan-400,
+.weapon-mode .text-cyan-300,
+.weapon-mode .text-cyan-200,
+.weapon-mode .text-cyan-500,
+.weapon-mode .text-cyan-600,
+.weapon-mode .text-cyan-700 {
+  color: #ef4444 !important;
+}
+.weapon-mode .border-cyan-400,
+.weapon-mode .border-cyan-300,
+.weapon-mode .border-cyan-200,
+.weapon-mode .border-cyan-500,
+.weapon-mode .border-cyan-600,
+.weapon-mode .border-cyan-700 {
+  border-color: #ef4444 !important;
+}
+.weapon-mode .bg-cyan-400,
+.weapon-mode .bg-cyan-300,
+.weapon-mode .bg-cyan-200,
+.weapon-mode .bg-cyan-500,
+.weapon-mode .bg-cyan-600,
+.weapon-mode .bg-cyan-700 {
+  background-color: #ef4444 !important;
+}
+.weapon-mode .from-cyan-400,
+.weapon-mode .from-cyan-300,
+.weapon-mode .from-cyan-200,
+.weapon-mode .from-cyan-500,
+.weapon-mode .from-cyan-600,
+.weapon-mode .from-cyan-700 {
+  --tw-gradient-from: #ef4444 !important;
+}
+.weapon-mode .to-cyan-400,
+.weapon-mode .to-cyan-300,
+.weapon-mode .to-cyan-200,
+.weapon-mode .to-cyan-500,
+.weapon-mode .to-cyan-600,
+.weapon-mode .to-cyan-700 {
+  --tw-gradient-to: #ef4444 !important;
+}
