@@ -4,6 +4,7 @@ import { useRef, useState, useEffect } from "react";
 import { useGLTF } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
 import * as THREE from "three";
+import { getModelPath } from "@/lib/utils";
 
 interface UFOProps {
   isActive: boolean;
@@ -30,7 +31,7 @@ export function UFO({
   const lastHitTimeRef = useRef(0);
 
   // Load UFO model
-  const { scene } = useGLTF("/models/ufo.glb");
+  const { scene } = useGLTF(getModelPath("/models/ufo.glb"));
   const ufoModel = scene.clone();
 
   // Handle health change

@@ -1,9 +1,11 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   output: "export",
-  // Comment these out for local development
-  basePath: "/universe-explorer-3d",
-  assetPrefix: "/universe-explorer-3d/",
+  // Set basePath and assetPrefix only in production (GitHub Pages)
+  basePath:
+    process.env.NODE_ENV === "production" ? "/universe-explorer-3d" : "",
+  assetPrefix:
+    process.env.NODE_ENV === "production" ? "/universe-explorer-3d/" : "",
   eslint: {
     ignoreDuringBuilds: true,
   },

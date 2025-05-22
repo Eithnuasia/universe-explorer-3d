@@ -6,6 +6,7 @@ import { Sphere, useGLTF, Ring, Line } from "@react-three/drei";
 import * as THREE from "three";
 import type { Planet as PlanetType } from "@/lib/constants/planets";
 import { PlanetLabel } from "./planet-label";
+import { getModelPath } from "@/lib/utils";
 
 // Komponen untuk mendaftarkan ekstensi GLTFLoader yang diperlukan
 function GLTFExtensions() {
@@ -181,7 +182,7 @@ function EarthGLTF({
   onClick: () => void;
 }) {
   const planetRef = useRef<THREE.Object3D>(null);
-  const { scene } = useGLTF("/models/earth.glb");
+  const { scene } = useGLTF(getModelPath("/models/earth.glb"));
 
   // Animate rotation
   useFrame((_, delta) => {
@@ -255,7 +256,7 @@ function SaturnGLTF({
   onClick: () => void;
 }) {
   const planetRef = useRef<THREE.Object3D>(null);
-  const { scene } = useGLTF("/models/saturn.glb");
+  const { scene } = useGLTF(getModelPath("/models/saturn.glb"));
 
   // Animate rotation
   useFrame((_, delta) => {
@@ -386,7 +387,7 @@ function JupiterGLTF({
   onClick: () => void;
 }) {
   const planetRef = useRef<THREE.Object3D>(null);
-  const { scene } = useGLTF("/models/jupiter.glb");
+  const { scene } = useGLTF(getModelPath("/models/jupiter.glb"));
 
   // Animate rotation
   useFrame((_, delta) => {
@@ -441,7 +442,7 @@ function NeptuneGLTF({
   onClick: () => void;
 }) {
   const planetRef = useRef<THREE.Object3D>(null);
-  const { scene } = useGLTF("/models/neptune.glb");
+  const { scene } = useGLTF(getModelPath("/models/neptune.glb"));
 
   // Animate rotation
   useFrame((_, delta) => {
@@ -496,7 +497,7 @@ function UranusGLTF({
   onClick: () => void;
 }) {
   const planetRef = useRef<THREE.Object3D>(null);
-  const { scene } = useGLTF("/models/uranus.glb");
+  const { scene } = useGLTF(getModelPath("/models/uranus.glb"));
 
   // Animate rotation
   useFrame((_, delta) => {
@@ -551,7 +552,7 @@ function MercuryGLTF({
   onClick: () => void;
 }) {
   const planetRef = useRef<THREE.Object3D>(null);
-  const { scene } = useGLTF("/models/mercury.glb");
+  const { scene } = useGLTF(getModelPath("/models/mercury.glb"));
 
   // Animate rotation
   useFrame((_, delta) => {
@@ -606,7 +607,7 @@ function VenusGLTF({
   onClick: () => void;
 }) {
   const planetRef = useRef<THREE.Object3D>(null);
-  const { scene } = useGLTF("/models/venus.glb");
+  const { scene } = useGLTF(getModelPath("/models/venus.glb"));
 
   // Animate rotation
   useFrame((_, delta) => {
@@ -661,7 +662,7 @@ function MarsGLTF({
   onClick: () => void;
 }) {
   const planetRef = useRef<THREE.Object3D>(null);
-  const { scene } = useGLTF("/models/mars.glb");
+  const { scene } = useGLTF(getModelPath("/models/mars.glb"));
 
   // Animate rotation
   useFrame((_, delta) => {
@@ -716,7 +717,7 @@ function MoonGLTF({
   onClick: () => void;
 }) {
   const moonRef = useRef<THREE.Object3D>(null);
-  const { scene } = useGLTF("/models/moon.glb");
+  const { scene } = useGLTF(getModelPath("/models/moon.glb"));
 
   // Animate rotation
   useFrame((_, delta) => {

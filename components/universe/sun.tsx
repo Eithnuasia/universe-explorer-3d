@@ -6,6 +6,15 @@ import { Sphere, useGLTF } from "@react-three/drei";
 import * as THREE from "three";
 import { PlanetLabel } from "./planet-label";
 import { usePlanetInteraction } from "@/lib/hooks/use-planet-interaction";
+import { getModelPath } from "@/lib/utils";
+
+interface SunProps {
+  position?: [number, number, number];
+  scale?: number;
+  active?: boolean;
+  onClick?: () => void;
+  isDiscovered?: boolean;
+}
 
 // Error boundary for catching model loading errors
 class ModelErrorBoundary extends Component<
@@ -37,7 +46,7 @@ class ModelErrorBoundary extends Component<
 // Sun component that uses the 3D model
 function SunGLTF({ onClick }: { onClick: () => void }) {
   const sunRef = useRef<THREE.Object3D>(null);
-  const { scene } = useGLTF("/models/sun.glb");
+  const { scene } = useGLTF(getModelPath("/models/sun.glb"));
 
   // Enhance the sun's brightness
   useEffect(() => {
@@ -118,17 +127,21 @@ function SunFallback({ onClick }: { onClick: () => void }) {
 }
 
 export function Sun({
-  onObjectClick,
-  discoveredPlanets,
-}: {
-  onObjectClick: (name: string, description: string) => void;
-  discoveredPlanets: string[];
-}) {
-  const { discoveredPlanets: existingPlanets, handlePlanetClick } =
-    usePlanetInteraction();
-  const isDiscovered = discoveredPlanets.includes("Sun");
+  position = [0, 0, 0],
+  scale = 3,
+  active = true,
+  onClick,
+  isDiscovered = false,
+}: SunProps) {
+  const { handlePlanetClick } = usePlanetInteraction();
   const sunDescription =
     "Matahari adalah bintang di pusat tata surya kita. Matahari sangat besar dan sangat panas, memancarkan cahaya dan panas yang membuat kehidupan di Bumi mungkin. Matahari terdiri dari gas hidrogen dan helium, dan memiliki diameter sekitar 1,4 juta kilometer.";
+  
+  const onObjectClick = (name: string, description: string) => {
+    handlePlanetClick(name, description);
+    if (onClick) onClick();
+  };
+  
   const fallback = (
     <SunFallback onClick={() => onObjectClick("Sun", sunDescription)} />
   );
@@ -153,7 +166,7 @@ export function Sun({
 // Safely preload in browser environment only
 if (typeof window !== "undefined") {
   try {
-    useGLTF.preload("/models/sun.glb");
+    useGLTF.preload(getModelPath("/models/sun.glb"));
   } catch (error) {
     console.error("Error preloading Sun model:", error);
   }
