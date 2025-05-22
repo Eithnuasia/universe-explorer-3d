@@ -136,21 +136,19 @@ export function Sun({
   const { handlePlanetClick } = usePlanetInteraction();
   const sunDescription =
     "Matahari adalah bintang di pusat tata surya kita. Matahari sangat besar dan sangat panas, memancarkan cahaya dan panas yang membuat kehidupan di Bumi mungkin. Matahari terdiri dari gas hidrogen dan helium, dan memiliki diameter sekitar 1,4 juta kilometer.";
-  
-  const onObjectClick = (name: string, description: string) => {
-    handlePlanetClick(name, description);
+
+  const onObjectClick = (name: string) => {
+    handlePlanetClick(name);
     if (onClick) onClick();
   };
-  
-  const fallback = (
-    <SunFallback onClick={() => onObjectClick("Sun", sunDescription)} />
-  );
+
+  const fallback = <SunFallback onClick={() => onObjectClick("Sun")} />;
 
   return (
     <>
       <ModelErrorBoundary fallback={fallback}>
         <Suspense fallback={fallback}>
-          <SunGLTF onClick={() => onObjectClick("Sun", sunDescription)} />
+          <SunGLTF onClick={() => onObjectClick("Sun")} />
         </Suspense>
       </ModelErrorBoundary>
       <PlanetLabel

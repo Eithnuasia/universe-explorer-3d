@@ -73,8 +73,12 @@ export function SolarSystem({
     <>
       {/* Sun */}
       <Sun
-        onObjectClick={onObjectClick}
-        discoveredPlanets={discoveredPlanets}
+        isDiscovered={discoveredPlanets.includes("Sun")}
+        onClick={() => {
+          const sunDescription =
+            "Matahari adalah bintang di pusat tata surya kita. Matahari sangat besar dan sangat panas, memancarkan cahaya dan panas yang membuat kehidupan di Bumi mungkin. Matahari terdiri dari gas hidrogen dan helium, dan memiliki diameter sekitar 1,4 juta kilometer.";
+          onObjectClick("Sun", sunDescription);
+        }}
       />
 
       {/* Planets and Orbits */}
