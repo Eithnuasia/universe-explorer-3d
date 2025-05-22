@@ -254,7 +254,7 @@ function useGameAudio() {
     // Inisialisasi ambient sound
     ambientSound.current = new Audio("/sounds/ambient/ambient.mp3");
     ambientSound.current.loop = true;
-    ambientSound.current.volume = 0.15;
+    ambientSound.current.volume = 0.25;
 
     // Inisialisasi battle sound
     battleSound.current = new Audio("/sounds/ambient/battle.mp3");
